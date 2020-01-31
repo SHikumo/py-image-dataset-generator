@@ -13,22 +13,22 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-folder',
+    parser.add_argument('--image',
                         help='Folder input path containing images that will be augmented',
                         required=True,
                         type=str
                         )
 
-    parser.add_argument('-limit',
-                        '-l',
+    parser.add_argument('--limit',
+                        '--l',
                         help='Number of files to generate (default: %s)'
                              % DEFAULT_DOWNLOAD_LIMIT,
                         required=True,
                         type=int
                         )
 
-    parser.add_argument('-dest',
-                        '-d',
+    parser.add_argument('--dest',
+                        '--output',
                         help='Folder destination for augmented image. (default: [folder input path] + %s)'
                         % DEFAULT_OUTPUT_FOLDER,
                         type=str,
@@ -40,9 +40,9 @@ if __name__ == '__main__':
     # print(args)
 
     generator = DatasetGenerator(
-        folder_path=args.folder,
+        folder_path=args.image,
         num_files=args.limit,
-        folder_destination=args.folder + DEFAULT_OUTPUT_FOLDER if args.dest is None else args.dest)
+        folder_destination=args.output + DEFAULT_OUTPUT_FOLDER if args.dest is None else args.dest)
 
     if 'rotate' in DEFAULT_OPERATIONS:
         generator.rotate(probability=DEFAULT_ROTATE_PROBABILITY,

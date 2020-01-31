@@ -5,6 +5,7 @@ from scipy import ndimage, ndarray
 from skimage.transform import rotate, resize
 from skimage.util import random_noise
 
+import numpy as np
 
 class Operation:
     __metaclass__ = ABCMeta
@@ -31,7 +32,7 @@ class Rotate(Operation):
         self.max_right_degree = max_right_degree
 
     def execute(self, image_array: ndarray):
-        random_degree = random.uniform(-self.max_right_degree, self.max_left_degree)
+        random_degree = np.random.choice([-self.max_right_degree,self.max_right_degree])
         return rotate(image_array, random_degree)
 
 
@@ -51,7 +52,7 @@ class Blur(Operation):
         super().__init__(probability)
 
     def execute(self, image_array: ndarray):
-        return ndimage.uniform_filter(image_array, size=(11, 11, 1))
+        return ndimage.uniform_filter(image_array, size=(5, 5, 1))
 
 
 class Resize(Operation):
