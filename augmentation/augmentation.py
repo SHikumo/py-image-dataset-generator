@@ -3,7 +3,7 @@ import random
 import time
 
 from augmentation.operations import OperationPipeline
-from utils.utils import FileUtil, ProgressBarUtil, NoImageFoundException, ExceptionUtil
+from utils.utils import FileUtil, ProgressBarUtil, NoImageFoundException
 
 
 class DatasetGenerator(OperationPipeline):
