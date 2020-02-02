@@ -41,7 +41,8 @@ class RandomNoise(Operation):
         super().__init__(probability)
 
     def execute(self, image_array: ndarray):
-        return random_noise(image_array)
+        noise_mode = random.choice(['gaussian','poisson','speckle','salt','pepper','s&p'])
+        return random_noise(image_array,noise_mode,seed=42)
 
 
 class Blur(Operation):

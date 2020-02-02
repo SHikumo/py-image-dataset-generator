@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     if args.type == 'blur':
         generator.blur(probability=DEFAULT_BLUR_PROBABILITY)
-        
+        generator.execute('blur')
     elif args.type == 'noise':
         generator.random_noise(probability=DEFAULT_RANDOM_NOISE_PROBABILITY)
         generator.execute('noise')
@@ -73,4 +73,4 @@ if __name__ == '__main__':
     # if 'vertical_flip' in DEFAULT_OPERATIONS:
     #     generator.vertical_flip(probability=DEFAULT_VERTICAL_FLIP_PROBABILITY)
 
-    generator.execute('blur')
+    

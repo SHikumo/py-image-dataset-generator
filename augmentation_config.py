@@ -1,10 +1,10 @@
-DEFAULT_OPERATIONS = [
-    # 'rotate',
-    'blur',
-    'random_noise'
-    # 'horizontal_flip',
-    # 'vertical_flip'
-]
+# DEFAULT_OPERATIONS = [
+#     # 'rotate',
+#     'blur',
+#     'random_noise'
+#     # 'horizontal_flip',
+#     # 'vertical_flip'
+# ]
 
 # Rotation configuration
 # DEFAULT_ROTATE_PROBABILITY = 0.5

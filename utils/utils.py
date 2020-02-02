@@ -1,5 +1,5 @@
 import unicodedata
-
+import shutil
 import os
 from typing import List
 
@@ -74,16 +74,24 @@ class FileUtil:
     @staticmethod
     def generate_next_file_path(folder_path: str, file_prefix: str):
         counter = len([i for i in os.listdir(folder_path) if file_prefix in i]) + 1
-        extension = ".jpg"
-        file_name = file_prefix + "_" + str(counter) + extension
+        
+        file_name = file_prefix + "_" + str(counter) #+ extension
         return os.path.join(folder_path, file_name)
 
     @staticmethod
-    def save_file(processed_image: ndarray, folder_path: str, file_prefix: str):
+    def save_file(processed_image: ndarray, label_name: str, src_path: str, folder_path: str, file_prefix: str):
         FileUtil.create_folder(folder_path)
         full_destination = FileUtil.generate_next_file_path(folder_path, file_prefix)
-        io.imsave(full_destination, processed_image)
+        io.imsave(full_destination + ".jpg", processed_image)
 
+        src_file = os.path.join(src_path, label_name)
+        shutil.copy(src_file, folder_path)
+        dst_file = os.path.join(folder_path,label_name)
+        os.rename(dst_file, full_destination + ".txt")
 
+    # @staticmethod
+    # def save_txt_file(label_name: str, src_path: str, folder_path: str, file_prefix: str):
+        
+        
 class NoImageFoundException(Exception):
     pass

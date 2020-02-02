@@ -38,36 +38,52 @@ class DatasetGenerator(OperationPipeline):
         """
         start_time = time.time()
         images_in_folder = FileUtil.get_images_file_path_array(self.folder_path)
+        
+        label_in_folder = []
+        for f in os.listdir(self.folder_path):
+            if f.endswith('.txt'):
+                label_in_folder.append(f)
+                print("label " + f)
 
         if not images_in_folder:
             raise (NoImageFoundException("No images found in %s folder" % self.folder_path))
 
         images_to_transform = []
 
+        
         # pick 'num_files' random files that will be use for data augmentation
         while len(images_to_transform) < self.num_files:
+            # random.choice(images_in_folder)
             images_to_transform.append(random.choice(images_in_folder))
 
         i = 0
         for file_path in images_to_transform:
             try:
                 files_name = os.path.basename(file_path)
+                print("\n")
+                # print(" " + files_name)
                 files_name = os.path.splitext(files_name)[0]
-                print(files_name)
-
+                
+                
                 augmented_image = FileUtil.open(file_path)
                 for operation in self.operations:
                     random_num = random.uniform(0, 1)
                     do_operation = random_num <= operation.probability
                     if do_operation:
                         augmented_image = operation.execute(augmented_image)
+                        
                 if self.save_to_disk:
+                    print(files_name)
+                    for label in label_in_folder:
+                        label_name_wtxt = os.path.basename(label)
+                        label_name = os.path.splitext(label_name_wtxt)[0]
+                        if files_name == label_name:
+                            if gen_type == 'blur':
+                                FileUtil.save_file(augmented_image, label_name_wtxt, self.folder_path, self.folder_destination, str(files_name) + '_blur')
+                            elif gen_type == 'noise':
+                                FileUtil.save_file(augmented_image, label_name_wtxt, self.folder_path, self.folder_destination, str(files_name) + '_noise')    
                     # pass
-                    if gen_type == 'blur':
-                        FileUtil.save_file(augmented_image, self.folder_destination, str(files_name) + "_blur")
-                    if gen_type == 'noise':
-                        FileUtil.save_file(augmented_image, self.folder_destination, str(files_name) + "_noise")
-            
+                    
             finally:
                 i = i + 1
                 ProgressBarUtil.update(i, self.num_files)
