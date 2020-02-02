@@ -1,5 +1,5 @@
 import random
-
+import os
 import time
 
 from augmentation.operations import OperationPipeline
@@ -32,7 +32,7 @@ class DatasetGenerator(OperationPipeline):
         """
         pass
 
-    def execute(self):
+    def execute(self, gen_type):
         """
             Execute the pipeline operation as configured
         """
@@ -51,6 +51,10 @@ class DatasetGenerator(OperationPipeline):
         i = 0
         for file_path in images_to_transform:
             try:
+                files_name = os.path.basename(file_path)
+                files_name = os.path.splitext(files_name)[0]
+                print(files_name)
+
                 augmented_image = FileUtil.open(file_path)
                 for operation in self.operations:
                     random_num = random.uniform(0, 1)
@@ -58,10 +62,12 @@ class DatasetGenerator(OperationPipeline):
                     if do_operation:
                         augmented_image = operation.execute(augmented_image)
                 if self.save_to_disk:
-                    FileUtil.save_file(augmented_image, self.folder_destination, "aug")
-            except Exception as e:
-                ExceptionUtil.print(e)
-                pass
+                    # pass
+                    if gen_type == 'blur':
+                        FileUtil.save_file(augmented_image, self.folder_destination, str(files_name) + "_blur")
+                    if gen_type == 'noise':
+                        FileUtil.save_file(augmented_image, self.folder_destination, str(files_name) + "_noise")
+            
             finally:
                 i = i + 1
                 ProgressBarUtil.update(i, self.num_files)

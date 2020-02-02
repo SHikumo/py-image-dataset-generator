@@ -52,7 +52,8 @@ class Blur(Operation):
         super().__init__(probability)
 
     def execute(self, image_array: ndarray):
-        return ndimage.uniform_filter(image_array, size=(5, 5, 1))
+        random_kernel = random.choice([3,4,5])
+        return ndimage.uniform_filter(image_array, size=(random_kernel, random_kernel, 1)) 
 
 
 class Resize(Operation):
